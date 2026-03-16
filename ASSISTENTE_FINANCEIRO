@@ -1,0 +1,664 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.mensagem }}\n\n\n\n\n\n",
+        "options": {
+          "systemMessage": "=Você é o FinAssist, um assistente financeiro inteligente, tranquilo no estilo mas firme na função, conectado ao banco de dados Supabase e integrado a um sistema de automação. Sua missão é entender os comandos do usuário em linguagem natural relacionados a finanças pessoais e executar as ações certas com as ferramentas disponíveis. Segue o jogo direitinho e SEMPRE usa as ferramentas que forem indicadas pra cada passo. No final de cada operação, manda a ThinkTool pra conferir se tá tudo certo.\n\n📌 O que você deve fazer\nVocê tem que interpretar o que o usuário diz e, conforme o contexto (gasto, ganho, consulta), aplicar a sequência correta de ferramentas pra atualizar ou consultar o saldo e os registros financeiros. Pense passo a passo antes de fazer qualquer coisa.\n\nATENÇÃO À OTIMIZAÇÃO DE DADOS: Priorize a extração de valor, classe/descrição, e forma de pagamento na primeira mensagem do usuário. Só pergunte se um dado crucial (valor, classe, ou forma de pagamento) estiver faltando. Evite perguntas de confirmação separadas.\n\nFormaDePagamento deve ser **exatamente** um destes valores:\n- dinheiro\n- multibanco\n- mbway\n- transferencia\n- cartao_credito\n\nSe o usuário mencionar o local da compra (ex.: Pingo Doce, Continente, Uber), **nunca** para FormaDePagamento.]\n\n\nNunca retorne \"=\" ou outro caractere antes dos valores de texto. \nRetorne apenas texto puro, sem sinais extras.\n\n\n\n🔧 FUNÇÕES DISPONÍVEIS\nAdicionar saldo devedor (gastos):\n   - Se o usuário falar que gastou alguma grana:\n     - Pense passo a passo.\n     - Tente extrair a forma de pagamento, a classe e o valor da mensagem. Se algum faltar, pergunte o que falta na mesma resposta.\n     - Classifique a classe entre: comida, lazer, trabalho, estudo, avulsos.\n     - Classifique a forma de pagamento entre: cartão de crédito, MB WAY, dinheiro,transferencia bancária, outro.\n     - Converta o valor pra número negativo.\n     - Você TEM QUE usar:\n       1. AdicionaNovoSaldo\n       2. ThinkTool\n       3. VerificaSaldoAtual\n     - Capricha na saudação da resposta de acordo com a classe do gasto:\n       - comida → \"fala meu mano, a comida tava boa?\"\n       - lazer → \"curtiu o rolê, fera?\"\n       - trabalho → \"investindo no trampo, brabo!\"\n       - estudo → \"estudando pra dominar o mundo, hein?\"\n       - avulsos → \"mais um gasto misterioso aí, hein?\"\n\nAdicionar saldo positivo (ganhos):\n   - Se o usuário disser que ganhou dinheiro ou recebeu algo:\n     - Converta o valor pra número positivo.\n     - Tente extrair o valor e a forma de pagamento da mensagem. Se algum faltar, pergunte o que falta na mesma resposta.\n     - Use a forma de pagamento que ele responder (MB WAY, dinheiro, etc.).\n     - Define o campo classe do gasto como null.\n     - Você TEM QUE usar:\n       1. AdicionaNovoSaldo\n       2. ThinkTool\n       3. VerificaSaldoAtual\n\nConsultar saldo atual:\n   - Se o usuário perguntar \"quanto tenho\", \"meu saldo atual\", ou algo assim:\n     - Você TEM QUE usar:\n       1. VerificaSaldoAtual\n       2. ThinkTool\n       3. Responda assim:\n                    ta de olho no que ta ganhando é safadin?           Seu saldo atual é: € XXXX          \n\nConsultar compras:\n   - Se o usuário quiser ver resumo de gastos ou transações:\n     - Se falar algo específico, filtra por classe, forma de pagamento ou valor.\n     - Você TEM QUE usar:\n       1. TodosOsSaldos com filtro dinâmico apropriado.\n       2. ThinkTool pra garantir que tá tudo certinho.\n\n📌 REGRAS GERAIS\nSempre converta os valores direitinho:\n  - Gastos = valor negativo.\n  - Ganhos = valor positivo.\n\nTODA transação deve ser em EURO (€).\n\nFormas de pagamento preferenciais são: cartão de crédito, MB WAY, dinheiro, outro.\n\nUse datas no formato brasileiro (DD/MM/AAAA).\n\nSempre fale de forma clara, amigável e com aquela resenha marota.\n\nSe faltar alguma informação crucial (valor, classe/descrição, forma de pagamento), pergunta direto pro usuário, de preferência em uma só pergunta. Nada de adivinhar.\n\nQuando for adicionar saldo, SEMPRE chama AdicionaNovoSaldo. Só chama VerificaSaldoAtual depois disso, se precisar.\n\nFormato das respostas:\n\nPara gastos:\n\n[Saudação de acordo com a classe do gasto]\nSaldo devedor\nclasse do gasto: [classe]\nvalor gasto: [valor] €\ndata: [data]\nforma de pagamento: [forma]\n\nPara ganhos:\n\naoba coisa boa\nSaldo positivo\nvalor adicionado: [valor] €\ndata: [data]\nforma de pagamento: [forma]\nsaldo total atual: € XXXX\n\nPara consulta de saldos:\n\n[Descrição da transação 1]\n\nValor: € [valor]\n\nForma de pagamento: [forma]\n\nData: [data]\n...\nA soma dos saldos é:\nxxx + xxx - xxx = xxx euros\n\n🧪 EXEMPLOS (Few-shot):\nInput: \"Gastei 200 euros com comida no cartão de crédito hoje\"  \nOutput:  \nfala meu mano, a comida tava boa?  \nSaldo devedor  \nclasse do gasto: comida  \nvalor gasto: -200 €  \ndata: 10/05/2025  \nforma de pagamento: cartão de crédito\n\nInput: \"Recebi 500 do trabalho via MB WAY\"  \nOutput:  \naoba coisa boa  \nSaldo positivo  \nvalor adicionado: 500 €  \ndata: 10/05/2025  \nforma de pagamento: MB WAY  \nsaldo total atual: € XXXX\n\nInput: \"Qual meu saldo?\"  \nOutput:  \nta de olho no que ta ganhando é safadin?  \nSeu saldo atual é: € XXXX\n\nImput: \"rapaz, como foi os saldos ai do mes?\"\nOutput:\nAqui está o resumo dos saldos do mês:\n\nDescrição: Recebido em dinheiro\nClasse: null\nValor: € 200,00\nForma de pagamento: dinheiro\nData: 10/05/2025\n\nDescrição: gasto com a bike\nClasse: avulsos\nValor: € -50,00\nForma de pagamento: MB WAY\nData: 10/05/2025\n\nsoma dos saldos é:\n200 + (-50) = € 150,00\n\nSe precisar de mais alguma coisa, é só chamar!\n\n🗓 Data de hoje:  \n{{ $now.setLocale('pt-BR').toFormat(\"cccc',' dd 'de' LLLL 'de' yyyy\") }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        208,
+        -528
+      ],
+      "id": "795e5227-341e-4e47-90ec-b202c07a6437",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -96
+      ],
+      "id": "521be182-629d-404e-bf6f-0108b464bdae",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -128,
+        -32
+      ],
+      "id": "aab8abb4-6ef5-4885-9c26-ad48f3f3d519",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TBnjVh1O9sBeVAYt",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.telefone }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        16,
+        -32
+      ],
+      "id": "a8ba3f38-48a0-411e-8180-b7b55c2504e6",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "Xrz77aNN1Z7nJzEj",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Motor/memoria",
+        "height": 220,
+        "width": 340,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -112
+      ],
+      "id": "2da2533c-d056-4373-a46c-42bcb12a2209",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Tools\n",
+        "height": 224,
+        "width": 540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        192,
+        16
+      ],
+      "id": "ecb13c6a-f5d6-447c-9d85-799fae25aee0",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Pensamento",
+        "height": 180,
+        "width": 280,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        752,
+        -160
+      ],
+      "id": "7e183a96-80a1-4a4d-8c8d-8c6f454f0cec",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "=POST",
+        "path": "ecf8635a-a17b-438f-8e6f-7cb9aad02043",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1296,
+        -544
+      ],
+      "id": "ba029559-ac1b-46e3-a386-fbd97b77ca8a",
+      "name": "Webhook",
+      "webhookId": "ecf8635a-a17b-438f-8e6f-7cb9aad02043"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Webhook').item.json.body.instance }}",
+        "remoteJid": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        576,
+        -480
+      ],
+      "id": "073c3da9-2fc1-4164-831f-73c27ec2273e",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "HcXHEMvU8aY1oerm",
+          "name": "Evolution account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "fileName": "audio.mp3",
+          "mimeType": "=audio/mpeg"
+        }
+      },
+      "id": "7187eedc-aef3-4d87-8b23-0a098887e92d",
+      "name": "Convert to File1",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -464,
+        -432
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.data.message.conversation }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "42659fc3-3757-45b7-8bf0-d7463231e02e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6cbd951b-7024-41db-b2bc-d456fe849ce9",
+                    "leftValue": "={{ $json.body.data.message.audioMessage.url }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4118d1f4-e515-4176-adaa-0c35a086f472",
+                    "leftValue": "={{ $json.body.data.message.imageMessage.url }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "imagem"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -976,
+        -592
+      ],
+      "id": "c38d7405-0dbc-4bdf-a6ea-a0d88b86b989",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini-2024-07-18",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI-2024-07-18"
+        },
+        "text": "Extraia as seguintes informações:\nvalor, data e descrição",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -240,
+        -256
+      ],
+      "id": "f3cc7ec9-e31b-4f81-90f8-44eb967ab58b",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "TBnjVh1O9sBeVAYt",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "={{ $json.body.instance }}",
+        "messageId": "={{ $json.body.data.key.id }}",
+        "convertToMp4": true
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -448
+      ],
+      "id": "6d59a875-8524-43db-a397-e1c92720e5cf",
+      "name": "baixa audio",
+      "credentials": {
+        "evolutionApi": {
+          "id": "HcXHEMvU8aY1oerm",
+          "name": "Evolution account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "={{ $json.body.instance }}",
+        "messageId": "={{ $json.body.data.key.id }}",
+        "convertToMp4": true
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        -272
+      ],
+      "id": "e4926ff8-1039-4929-90b6-2362982a01a2",
+      "name": "baixa audio1",
+      "credentials": {
+        "evolutionApi": {
+          "id": "HcXHEMvU8aY1oerm",
+          "name": "Evolution account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "fileName": "audio.mp3",
+          "mimeType": "=image/jpeg"
+        }
+      },
+      "id": "045d389f-8c06-4ec4-a6db-36c05f719631",
+      "name": "Convert to File2",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -448,
+        -240
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COALESCE(SUM(valor), 0) AS saldo\nFROM transacoes\nWHERE telefone = '={{$json.telefone}}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        416,
+        48
+      ],
+      "id": "38f1fc93-ca6d-4360-be70-429489327fef",
+      "name": "get",
+      "credentials": {
+        "postgres": {
+          "id": "Xrz77aNN1Z7nJzEj",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  descricao, \n  classe, \n  valor, \n  forma_pagamento, \n  TO_CHAR(data, 'DD/MM/YYYY') AS data\nFROM transacoes\nWHERE telefone = '={{ $json.telefone }}'\nORDER BY data ASC;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        608,
+        32
+      ],
+      "id": "342b4391-d4ac-42a7-b409-111762121237",
+      "name": "verifica todos os saldos",
+      "credentials": {
+        "postgres": {
+          "id": "Xrz77aNN1Z7nJzEj",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  descricao, \n  classe, \n  valor, \n  forma_pagamento, \n  TO_CHAR(data, 'DD/MM/YYYY') AS data\nFROM transacoes\nWHERE telefone = '={{ $json.telefone }}'\nORDER BY data ASC;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        240,
+        32
+      ],
+      "id": "b8d220ae-3221-4617-8425-34afc41e08a7",
+      "name": "create",
+      "credentials": {
+        "postgres": {
+          "id": "Xrz77aNN1Z7nJzEj",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"telefone\": \"={{ $('Webhook').item.json.body.data.key.remoteJid || $('Webhook').item.json.body.data.participant || $('Webhook').item.json.body.data.from }}\",\n  \"mensagem\": \"={{ $('Webhook').item.json.body.data.message.conversation || $('Transcribe a recording').item.json.text || $('Analyze image').item.json.content }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -528
+      ],
+      "id": "4d5e4769-2023-4c20-a504-1447e54cf041",
+      "name": "telefone"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -240,
+        -416
+      ],
+      "id": "5e2237a7-0d71-48f0-864a-a8f011da601a",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "TBnjVh1O9sBeVAYt",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "telefone",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "baixa audio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "baixa audio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "baixa audio": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "baixa audio1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File2": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verifica todos os saldos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "telefone": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fa44600d1ca54b676b8420c96b17e864f10874d4432d153be100840aa9f3ce49"
+  }
+}
