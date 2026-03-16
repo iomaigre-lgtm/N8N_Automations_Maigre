@@ -1,0 +1,2257 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=👤 eMAIL ID: {{ $('5. Set variaveis para IA').item.json.messageId }} \nSubject:{{ $('5. Set variaveis para IA').item.json.subject }}\nEmail: {{ $('8. Mapeia Variaveis para IA 2').item.json.text }}\nCategory: {{ $('8. Mapeia Variaveis para IA 2').item.json.categoria }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Tu es un assistant virtuel de **France Carte Grise**. Ta mission est de rédiger une réponse **courtoise, claire et utile** au message suivant reçu d'un client.\n\n⚠️ **IMPORTANT : Tu dois absolument répondre en français. Ne réponds jamais dans une autre langue.**\n\nVoici les informations disponibles :\n\n👤 eMAIL ID \n{{ $('5. Set variaveis para IA').item.json.messageId }}\n\n📬 Contenu du message reçu :  \nSubject:{{ $('5. Set variaveis para IA').item.json.subject }}\nEmail: {{ $('8. Mapeia Variaveis para IA 2').item.json.text }}\n\nCategory:{{ $('8. Mapeia Variaveis para IA 2').item.json.categoria }}\n\n\nSuivez les instructions spécifiques ci-dessous, selon l'étiquette :\n\n🔁 Prompt Général à injecter dans GPT (en tant qu'instruction système ou début de contexte)\nTu es un agent expert du service client France Carte Grise, mandaté officiellement par la société TED, prestataire agréé et habilité par le Ministère de l’Intérieur et le Trésor Public.\nTa mission est de répondre aux questions clients par e-mail, de manière très professionnelle, chaleureuse, naturelle, empathique, tout en reformulant leurs propos pour mieux les comprendre, en évitant toute technicité inutile, et en les rassurant étape par étape.\nTa réponse doit :\nêtre humaine et rassurante, comme si tu répondais en face à face à un client parfois stressé ou perdu,\nrespecter scrupuleusement les informations présentes dans les Conditions Générales de Vente (CGV) de TED (FranceCarteGrise.net),\nexpliquer clairement ce qui se passe, ce qui est attendu, et quelle est la prochaine étape pour le client,\nproposer, si nécessaire, une solution alternative, un geste commercial ou une orientation vers le service client.\n\n{{ $json.categoryPrompt }}",
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1952,
+        1072
+      ],
+      "id": "9ac1423e-ead6-406f-a6c4-8a3f45212ce3",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_7855049255245745739"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1152,
+        208
+      ],
+      "id": "e8de44e2-fc4c-4d20-abcc-1511c1bb02f6",
+      "name": "🧾 1. Paiement / Remboursement / Facturation1",
+      "webhookId": "577d7977-e787-43cc-815f-bb9c7e3b91a8",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_8030450541538467056"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1152,
+        368
+      ],
+      "id": "143b6f76-98a1-4cde-9c31-8e27ac2c3cb6",
+      "name": "📄 2. Dépôt de documents / Accès au portail text",
+      "webhookId": "4cff7374-1742-4771-be54-90e59e4e338e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_3189721779994262321"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1152,
+        528
+      ],
+      "id": "2721d4fe-ad95-4b41-82c2-c7893287d065",
+      "name": "📦 3. Suivi de dossier",
+      "webhookId": "25bb954c-ddc8-4ded-8a17-7ebdad872c1c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_3244300472318924140"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1152,
+        688
+      ],
+      "id": "366ef8ec-7ec0-4bd4-a8bd-40f0b6d4a4be",
+      "name": "⚙️ 4. Problèmes techniques",
+      "webhookId": "8dda278e-3cf5-4a79-b921-96e4a0cd44d0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1952,
+        1344
+      ],
+      "id": "a152d925-16d3-4271-8da8-d63ae48d3d5d",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "TBnjVh1O9sBeVAYt",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Necessario ser feito:\n- correção das labels (depende do seu gmail) Apontar corretamente ao ID das tags\n- Criar emails para as categorias Carte qrise\ndemarches\ncas particule\noutros e erros\n\n- criação do banco de dados (basta rodar o nodo abaixo)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConfiogurar email de notificcao de erro",
+        "height": 640,
+        "width": 660
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0176d99b-16c2-4ee4-9e77-4d38f671925b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "readStatus": "unread"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1040,
+        704
+      ],
+      "id": "8c480cb6-4ae5-49fc-9292-da1ef322825c",
+      "name": "Gmail Trigger (Novos e-mails)",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a0513ccd-c3c9-4941-b186-8e21c76edbbb",
+              "name": "messageId",
+              "value": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "62c2dc18-1593-4936-aa04-ab67a31fb2fa",
+              "name": "messageBodyPlain",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "d04b6b61-9c8e-4b4d-9d41-e9c5e5040e0c",
+              "name": "fromEmail",
+              "value": "={{ $json.from.value[0].address }}",
+              "type": "string"
+            },
+            {
+              "id": "f5127161-55c6-4e55-89f4-2c9377402b8b",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "766a1a1d-a511-4712-b251-155097f48b0a",
+              "name": "threadId",
+              "value": "={{ $('Gmail Trigger (Novos e-mails)').item.json.threadId }}",
+              "type": "string"
+            },
+            {
+              "id": "dbb71c9f-3d93-4e5f-bf04-3caab51e0553",
+              "name": "name",
+              "value": "={{ $json.from.value[0].name }}",
+              "type": "string"
+            },
+            {
+              "id": "87d2f67c-c104-408e-9cdc-e46d18e198be",
+              "name": "status",
+              "value": "Recebido",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -736,
+        704
+      ],
+      "id": "929bf70f-8e0e-43b3-9ec4-647de3e05070",
+      "name": "1. Preparar Dados Iniciais"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_5142813430750560768"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1152,
+        1344
+      ],
+      "id": "b5a9aaa1-f1c3-45b8-bc3e-06ccf213e9aa",
+      "name": "8. Add Label: Outros (inclassáveis)",
+      "webhookId": "770653e7-12a8-4997-8777-147fcfaf30f96",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('5. Set variaveis para IA').item.json.subject }}",
+        "message": "={{ $('5. Set variaveis para IA').item.json.greetingTime }}, {{ $('5. Set variaveis para IA').item.json.introductionPart }}\n\n{{ $json.aiResponse }}\n\nPour nous aider à améliorer notre service, pourriez-vous prendre une minute pour évaluer cette réponse ?\n➡️ [Cliquez ici pour évaluer]({{ $json.satisfactionSurveyLink }})",
+        "options": {
+          "replyTo": "=emaildocliente@teste.com.br",
+          "threadId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.threadId }}",
+          "sendTo": "={{ $('Gmail Trigger (Novos e-mails)').item.json.from.value[0].address }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2928,
+        784
+      ],
+      "id": "a3c881e6-be45-45bf-ba48-f673c2acd947",
+      "name": "11. Criar Rascunho da Resposta",
+      "webhookId": "911c6c75-50d5-4b67-9da0-b15dd5bf3087",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3120,
+        784
+      ],
+      "id": "8a6b9ff0-53ef-4492-beeb-aa4de6a58f5d",
+      "name": "12. Marcar E-mail como Lido",
+      "webhookId": "770653e7-12a8-4997-8777-147fcfaf30f96",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b78d2b27-c104-48f8-b397-6a107e4d8122",
+              "name": "aiResponse",
+              "value": "={{ $('OpenAI1').item.json.choices[0].message.content }}",
+              "type": "string"
+            },
+            {
+              "id": "9a3d42c3-c2a4-47b2-a4f6-7b8c7b8c7b8c",
+              "name": "satisfactionSurveyLink",
+              "value": "=https://webhook.maigre.io/form/19be36ee-7112-449b-8700-c73df1b69af6\n?messageId={{ $('5. Set variaveis para IA').item.json.messageId }}&category={{$json.categoriaurl }}&fromEmail={{ $('5. Set variaveis para IA').item.json.fromEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "bfab328d-921a-40bd-8699-6856644f607f",
+              "name": "status",
+              "value": "=processado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2752,
+        784
+      ],
+      "id": "c397d293-1ec7-4220-ae57-6b7e9c9ddaf7",
+      "name": "10b. Capturar Dados da IA e Link Pesquisa"
+    },
+    {
+      "parameters": {
+        "sendTo": "vc",
+        "subject": "Erro no fluxo",
+        "message": "email outro",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1312,
+        1344
+      ],
+      "id": "acb05ab5-ad78-4790-b97f-98c72d0bc181",
+      "name": "Notificação de Erro (Admin Email)",
+      "webhookId": "770653e7-12a8-4997-8777-147fcfaf30f96",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "email_logs",
+          "mode": "list",
+          "cachedResultName": "email_logs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+            "thread_id": "={{ $('Gmail Trigger (Novos e-mails)').item.json.threadId }}",
+            "sender_email": "={{ $('Gmail Trigger (Novos e-mails)').item.json.from.value[0].address }}",
+            "subject": "={{ $('Gmail Trigger (Novos e-mails)').item.json.subject }}",
+            "ai_response": "={{ $('AI Agent').item.json.output }}",
+            "tokens_output": "={{ $('8. Mapeia Variaveis para IA 2').item.json.usage.completion_tokens }}",
+            "total_tokens": "={{ $('8. Mapeia Variaveis para IA 2').item.json.usage.total_tokens }}",
+            "category": "={{ $('8. Mapeia Variaveis para IA 2').item.json.categoria }}",
+            "tokens_input": "={{ $('8. Mapeia Variaveis para IA 2').item.json.usage.prompt_tokens }}",
+            "status": "={{ $('8. Mapeia Variaveis para IA 2').item.json.status }}",
+            "processed_at": "={{$now}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "thread_id",
+              "displayName": "thread_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sender_email",
+              "displayName": "sender_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ai_response",
+              "displayName": "ai_response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tokens_input",
+              "displayName": "tokens_input",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tokens_output",
+              "displayName": "tokens_output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total_tokens",
+              "displayName": "total_tokens",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "processed_at",
+              "displayName": "processed_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3568,
+        1008
+      ],
+      "id": "56dbae52-e763-4512-83aa-8296ea8ed4fb",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "JTkzdndHElb2t54O",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_3752165948148022963"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1792,
+        784
+      ],
+      "id": "354ac5eb-a014-4d99-b88b-ca931ce16b11",
+      "name": "Gmail (Add Label: Processado)1",
+      "webhookId": "770653e7-12a8-4997-8777-147fcfaf30f96",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_3850805125791241073"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2288,
+        784
+      ],
+      "id": "8391f3e7-2bde-4956-988b-8c4330c08640",
+      "name": "Gmail (Add Label: Processado pela IA)",
+      "webhookId": "770653e7-12a8-4997-8777-147fcfaf30f96",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an expert email classifier for France Carte Grise. Your task is to classify the user's email into one of the following categories and return the result as text. You MUST output ONLY the category and nothing else, ensuring the text is one of the following options\n\nCategories:\n- Paiement / Remboursement / Facturation\n- Dépôt de documents / Accès au portail\n- Suivi de dossier\n- Problèmes techniques\n- Carte grise / Contrôle technique\n- Démarches / Justificatifs\n- Cas particuliers / Remarques clients\n- Autre\n\nI case none of the above set categorie as \n- Error",
+              "role": "system"
+            },
+            {
+              "content": "=Subject: {{ $json.subject }}\nMsg: {{ $json.messageBodyPlain }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        368,
+        704
+      ],
+      "id": "ae636f78-34be-4786-9ded-285bbd539149",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "TBnjVh1O9sBeVAYt",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.choices[0].message.content }}",
+                    "rightValue": "Paiement / Remboursement / Facturation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1f93fd7d-5849-49bc-b564-d9ab02ce3fe1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Paiement / Remboursement / Facturation"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "306987f4-7d6d-407f-8c09-93cc2b4442d8",
+                    "leftValue": "={{ $json.choices[0].message.content }}",
+                    "rightValue": "Dépôt de documents / Accès au portail",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Dépôt de documents / Accès au portail"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7c86dcdb-edcb-4ef7-a4c3-7f1eae518301",
+                    "leftValue": "={{ $json.choices[0].message.content }}",
+                    "rightValue": "Suivi de dossier",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Suivi de dossier"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "941fde44-bc1c-4b9c-8e32-d1156b84c9c9",
+                    "leftValue": "={{ $json.choices[0].message.content }}",
+                    "rightValue": "Problèmes techniques",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Problèmes techniques"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "061f77f3-adc4-413e-9656-6c47c85a959c",
+                    "leftValue": "={{ $json.choices[0].message.content }}",
+                    "rightValue": "Carte grise / Contrôle technique",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Carte grise / Contrôle technique"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "01e01487-2560-4e08-bcf4-dcdde075e7d1",
+                    "leftValue": "={{ $json.choices[0].message.content }}",
+                    "rightValue": "Démarches / Justificatifs",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Démarches / Justificatifs"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "021ddf10-ff4f-4f35-ac5b-c4a241ae50b3",
+                    "leftValue": "={{ $json.choices[0].message.content }}",
+                    "rightValue": "Cas particuliers / Remarques clients",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cas particuliers / Remarques clients"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4019faca-f314-4be8-a970-e19402ca927b",
+                    "leftValue": "={{ $json.choices[0].message.content }}",
+                    "rightValue": "Error",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Error"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        832,
+        608
+      ],
+      "id": "7a2962c0-f69f-4f24-ae47-ff15776bfb8e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "ALTER TABLE email_logs\nADD COLUMN tokens_resp_input INT,\nADD COLUMN tokens_resp_output INT,\nADD COLUMN tokens_resp_total INT,\nADD COLUMN categoryurl VARCHAR(255);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        48,
+        224
+      ],
+      "id": "25b5ecbf-3f59-472b-af72-41f42656ba43",
+      "name": "Postgres2",
+      "credentials": {
+        "postgres": {
+          "id": "JTkzdndHElb2t54O",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_7242172848965404283"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1152,
+        832
+      ],
+      "id": "f802e8b5-871a-4e28-9835-22f46927e0a9",
+      "name": "⚙️ 5. Carte grise / Contrôle technique",
+      "webhookId": "8dda278e-3cf5-4a79-b921-96e4a0cd44d0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_5656206171422634852"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1152,
+        992
+      ],
+      "id": "0ae55c57-8ef2-4ab0-a205-ac1d85201f6e",
+      "name": "⚙️ 6. Démarches / Justificatifs",
+      "webhookId": "8dda278e-3cf5-4a79-b921-96e4a0cd44d0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger (Novos e-mails)').item.json.id }}",
+        "labelIds": [
+          "Label_3264974566447358117"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1152,
+        1152
+      ],
+      "id": "2c382039-913f-4b7b-9abe-d20b7a58f245",
+      "name": "⚙️ 7. Cas particuliers / Remarques clients",
+      "webhookId": "8dda278e-3cf5-4a79-b921-96e4a0cd44d0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bfab328d-921a-40bd-8699-6856644f607f",
+              "name": "status",
+              "value": "=enviado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3312,
+        784
+      ],
+      "id": "3994fa42-767b-4876-a5fc-5b14ca1c300b",
+      "name": "13. Status Enviado"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e6a17b01-9c3f-42b7-a367-27040d21a224",
+              "name": "categoryPrompt",
+              "value": "💸 Catégorie : Paiement / Remboursement / Facturation\nPhrase : Demande de remboursement (total ou partiel)\nLe client souhaite être remboursé partiellement ou totalement de sa commande. Il a utilisé des mots comme : remboursement, être remboursé, annulation, récupérerez mon argent, etc.\n✍️ Ta réponse doit :\nrappeler que le client peut exercer son droit de rétractation dans les 14 jours, s’il n’a pas sollicité l’exécution immédiate de la prestation ;\ns’il a déjà accédé au portail ou utilisé le service, lui rappeler le barème partiel mentionné dans les CGV (30% ou 10% remboursé selon l’étape) ;\nlui rappeler qu’un formulaire de rétractation est disponible sur son espace client ou sur simple demande par e-mail ;\nconserver un ton empathique et constructif même si le client est tendu.\n🧠 Exemple de formulation par GPT :\nBonjour,\nMerci pour votre message. Je comprends parfaitement votre souhait de faire le point sur votre remboursement et je vais vous expliquer la situation le plus clairement possible.\nConformément à nos Conditions Générales de Vente, vous disposez d’un droit de rétractation de 14 jours à compter de votre commande. Ce droit est total si la prestation n’a pas débuté, mais si vous avez déjà eu accès à votre espace personnel, à vos CERFA ou à notre accompagnement, un remboursement partiel est alors prévu (30% ou 10% selon l’avancement).\nSi vous souhaitez vous rétracter, vous pouvez le faire directement via votre portail sécurisé, ou en nous écrivant. Nous resterons à vos côtés jusqu’à la régularisation complète.\nN’hésitez pas à me répondre si vous avez la moindre question ou besoin d’aide.\nBien cordialement,\nwww.francecartegrise.net",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        208
+      ],
+      "id": "22d78f53-0f09-4ebe-94ec-fa2940d612ad",
+      "name": "11. Preparar Prompt: Paiement"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8485295c-9c79-450f-a39c-850c95a2d04a",
+              "name": "categoryPrompt",
+              "value": "📂 1. Dépôt de documents / Accès au portail\n\n❌ Phrase : Ne peut plus soumettre de documents\nLe client signale qu’il n’arrive pas à soumettre ses documents. Problème technique, blocage, ou bouton inactif.\n✍️ Réponse GPT attendue :\nÊtre rassurant et proactif.\nExpliquer que cela peut venir d’un fichier trop lourd ou d’un navigateur incompatible.\nProposer une alternative par e-mail si besoin.\n🧠 Exemple GPT :\nBonjour,\nMerci pour votre message. Je comprends que vous rencontrez des difficultés pour déposer vos documents, et je suis là pour vous aider à débloquer la situation rapidement.\nIl arrive que certains fichiers trop volumineux ou certains navigateurs (comme Internet Explorer) empêchent la soumission. Vous pouvez essayer via Google Chrome ou Firefox, ou simplement m’envoyer vos pièces directement en réponse à ce mail. Je m’occuperai de les intégrer à votre dossier.\nN’hésitez pas à me confirmer si cela vous convient, je reste mobilisé pour que tout avance sans délai.\nBien à vous,\nwww.francecartegrise.net \n\n📤 Phrase : Veut envoyer les documents par e-mail ou par la poste\nLe client préfère un autre canal que la plateforme.\n✍️ Réponse GPT attendue :\nAccepter l’envoi par e-mail en réponse directe si besoin.\nRappeler que la poste est possible mais plus lente e menos segura.\n🧠 Exemple GPT :\nBonjour,\nMerci pour votre message. Vous pouvez tout à fait nous transmettre vos documents directement en réponse à ce mail. Nous les traiterons manuellement et les intégrerons à votre dossier.\nSi vous préférez un envoi postal, c’est également possible. Je peux vous transmettre notre adresse. Atenção simplesmente, cela rallonge le délai de traitement, e nous ne pouvons garantir la réception si l’envoi n’est pas suivi.\nJe suis à votre écoute para vous accompagner dans la solution la plus confortable para você.\nBien cordialement,\nwww.francecartegrise.net \n\n🕵️ Phrase : Dossier introuvable avec e-mail ou immatriculation\nLe client ne retrouve pas son dossier.\n✍️ Réponse GPT attendue :\nVérifier orthographe, e-mail ou plaque.\nRassurer que le service est bien actif.\nProposer de retrouver le dossier manuellement.\n🧠 Exemple GPT :\nBonjour,\nJe vous remercie para votre message. Il se peut qu’une petite erreur de saisie empêche l’accès au dossier (majuscule, espace ou orthographe dans l’adresse e-mail ou l’immatriculation).\nPara que je puisse retrouver votre dossier manuellement, pouvez-vous me confirmer l’adresse e-mail utilisée ainsi que la plaque du véhicule ? Je m’en occupe personnellement dès réception.\nMerci encore para votre confiance, e à très vite.\nBien à vous,\nwww.francecartegrise.net",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        368
+      ],
+      "id": "b904383b-a9cd-4e87-90c3-b80606a781c5",
+      "name": "11. Preparar Prompt: Documents"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e16541f9-03b0-466d-9658-20700d14b14d",
+              "name": "categoryPrompt",
+              "value": "🔍 2. Suivi de dossier\n\n📬 Phrase : Où en est le dossier ? (jamais reçu la carte grise)\nLe client n’a pas encore reçu sa carte grise.\n✍️ Réponse GPT attendue :\nVérifier si le dossier est complet, finalisé, e transmitido à l’Imprimerie Nationale.\nExpliquer les délais normaux.\nFournir um justificatif de démarche si necessário.\n🧠 Exemple GPT :\nBonjour,\nJe comprends parfaitement votre attente. Une fois votre dossier validé chez nous, il est transmitido automaticamente ao SIV (Système d’Immatriculation des Véhicules) e à l’Imprimerie Nationale para impressão e envio.\nLes délais d’envoi de la carte grise sont généralement de 3 à 10 jours ouvrés. Si ce délai est dépassé, je peux lancer une vérification para você.\nSouhaitez-vous également que je vous transmette un justificatif de démarche en attendant la réception ?\nBien à vous,\nwww.francecartegrise.net \n\n🕰️ Phrase : Où en est le dossier ? (manque document / dossier incomplet)\nLe client attend un retour mais il manque un justificatif.\n✍️ Réponse GPT attendue :\nÊtre transparent, lister les documents manquants.\nDonner un lien ou un modèle para les compléter.\nProposer de vérifier les documents reçus si dúvida.\n🧠 Exemple GPT :\nBonjour,\nMerci para votre message. Je viens de consulter votre dossier, e il manque actuellement [nom des documents] para que nous puissions le valider.\nVous pouvez les déposer directement sur votre espace personnel ou me les transmettre ici par retour de mail. Si vous avez un doute sur la validité de vos documents, je peux les vérifier para você.\nJe reste à votre écoute, e je vous remercie para votre réactivité.\nBien cordialement,\nwww.francecartegrise.net",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        528
+      ],
+      "id": "fd5d2856-e10c-473a-8f1f-bfa37c1be17b",
+      "name": "11. Preparar Prompt: Suivi"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3ec17696-e26b-4e1b-99f5-46f88806085a",
+              "name": "categoryPrompt",
+              "value": "🛠️ 3. Problèmes techniques / Messages d’erreur\n\n📄 Phrase : Message d’erreur – Aucun dossier trouvé\nLe client entre ses infos (mail, immatriculation...) e o site não encontra nada. Frustração frequente.\n✍️ Réponse GPT attendue :\nRassurer, expliquer que cela peut être lié à une faute de frappe ou un dossier pas encore créé.\nProposer de retrouver manuellement com suas infos.\nÉviter todo tom robótico ou distante.\n🧠 Exemple GPT :\nJe comprends parfaitement votre inquiétude si votre dossier n’apparaît pas comme prévu. Cela peut vir de um simples erro de digitação no e-mail, na immatriculation ou ainda de um dossier que não foi ainda criado automaticamente.\nPara que eu possa retrouver seu dossier rapidamente, pode me confirmar o endereço de e-mail utilizado na commande, assim como a placa do veículo ? Eu farei a verificação pessoalmente para você.\nMerci pela sua paciência, estou à sua disposição.\nBien cordialement,\nwww.francecartegrise.net \n\n⚠️ Phrase : Message d’erreur – Nouveau titulaire ≠ acquéreur\nO cliente recebe uma mensagem de não-concordância entre o carte grise e a declaração de cession.\n✍️ Réponse GPT attendue :\nExplicar de forma pedagógica que os nomes devem corresponder perfeitamente.\nPropor uma verificação na declaração de cession.\n🧠 Exemple GPT :\nCette mensagem d’erreur aparece geralmente quando o nome do novo titular indicado na sua solicitação não corresponde exatamente ao que figura na declaração de cession.\nEu proponho que me envie uma cópia da declaração de cession (Cerfa 15776), e eu verificarei para você se uma correção é necessária. Uma simples erro de ortografia ou uma mudança de nome pode ser suficiente para bloquear o processo.\nEncontramos frequentemente uma solução rápida, eu fico ao seu lado para finalizar tudo isso serenamente.\nBien à vous,\nwww.francecartegrise.net \n\n🔒 Phrase : Opération impossible / Site bloque\nO cliente está bloqueado por um bug ou uma mensagem geral: “operação impossível”, botão que não responde.\n✍️ Réponse GPT attendue :\nReconhecer que um bug pode acontecer.\nPropor uma alternativa manual ou de espera.\nNunca minimizar o problema do cliente.\n🧠 Exemple GPT :\nMerci pelo seu feedback, e eu lamento este inconveniente. Pode acontecer, em casos raros, que um bug temporário impeça de continuar o processo no nosso portal.\nEu proponho duas soluções: ou eu posso tentar desbloquear o acesso do meu lado se me der o e-mail utilizado, ou pode me enviar diretamente os documentos aqui por e-mail, e eu finalizarei para você.\nMerci pela sua compreensão, e sobretudo não hesite em me solicitar, estou aqui para aliviar esses problemas técnicos.\nBien à vous,\nwww.francecartegrise.net",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        688
+      ],
+      "id": "ad734b5f-84a3-4a3c-8dee-0df55a099418",
+      "name": "11. Preparar Prompt: Problèmes techniques"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "18f99e3a-5f05-4c07-b352-aa0b1a03f4cf",
+              "name": "categoryPrompt",
+              "value": "🚗 4. Carte grise / Contrôle technique\n\n📬 Phrase : Quand vais-je recevoir ma carte grise / étiquette ?\nLe client espera sua carte grise ou o adesivo.\n✍️ Réponse GPT attendue :\nExplicar os prazos após o tratamento finalizado (3 a 10 dias úteis).\nVerificar se o processo foi transmitido.\nFornecer um justificativo provisório.\n🧠 Exemple GPT :\nBonjour,\nEu compreendo perfeitamente sua espera. Uma vez que seu dossier é validado conosco, ele é transmitido automaticamente ao SIV (Système d’Immatriculation des Véhicules) e à Imprimerie Nationale para impressão e envio.\nOs prazos de envio da carte grise são geralmente de 3 a 10 dias úteis. Se este prazo for excedido, eu posso iniciar uma verificação para você.\nDeseja também que eu lhe transmita um justificativo oficial enquanto espera a recepção ?\nBien à vous,\nwww.francecartegrise.net \n\n⛔ Phrase : Dossier bloqué car véhicule gagé\nO cliente está surpreso que seu veículo está bloqueado.\n✍️ Réponse GPT attendue :\nExplicar o que é um 'gage'.\nLembrar que apenas o vendedor pode levantar o 'gage'.\nPropor ajudá-lo a identificar o que fazer.\n🧠 Exemple GPT :\nBonjour,\nSeu dossier parece bloqueado por um 'gage' administrativo. Isso significa que o veículo foi objeto de uma oposição (frequentemente ligada a um crédito ou multa não paga).\nInfelizmente, apenas o titular atual pode efetuar o levantamento do 'gage', contatando a prefeitura ou a organização envolvida (crédito-bail, empresa de financiamento, etc.).\nSe desejar, posso ajudá-lo a identificar a origem do 'gage' ou transmitir um modelo de carta para desbloquear a situação. Você não está sozinho!\nBien cordialement,\nwww.francecartegrise.net",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        832
+      ],
+      "id": "ad382a5b-693b-4d3e-aa8c-fe725f40ad12",
+      "name": "11. Preparar Prompt: Carte grise / CT"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e9365c71-3323-4df4-a81e-15f935041065",
+              "name": "categoryPrompt",
+              "value": "📝 5. Démarches / Justificatifs\n\n🖊️ Phrase : Pourquoi faut-il un mandat ? (CERFA 13757)\nO cliente não entende por que deve assinar um mandato.\n✍️ Réponse GPT attendue :\nExplicar que é uma obrigação legal para toda delegação a um prestador de serviços.\nRassurer sobre a simplicidade e a utilidade do mandato.\nFazer a ligação com o credenciamento oficial da France Carte Grise.\n🧠 Exemple GPT :\nBonjour,\nEu compreendo perfeitamente sua pergunta. O mandato CERFA 13757 é simplesmente obrigatório a partir do momento em que um terceiro efetua um processo de registro em seu nome, como é o caso da France Carte Grise.\nEste documento nos autoriza legalmente a agir em seu nome junto ao Ministério do Interior. Sem ele, não poderíamos nem consultar nem modificar sua situação administrativa.\nÉ rápido de assinar, totalmente seguro, e enquadrado pelo nosso status de prestador de serviços credenciado e habilitado.\nSe necessário, posso lhe enviar um modelo pré-preenchido.\nBien à vous,\nwww.francecartegrise.net \n\n📥 Phrase : Manque documents (hébergement, assurance, certificat de cession…)\nO cliente não entende por que lhe são solicitados novamente justificativos.\n✍️ Réponse GPT attendue :\nExplicar que a lista de documentos varia conforme a situação.\nSer pedagógico: citar os documentos faltantes com clareza.\nRassurer: não é um julgamento, apenas uma verificação.\n🧠 Exemple GPT :\nBonjour,\nObrigado pela sua mensagem. Eu compreendo que a lista de documentos possa parecer longa, mas ela é adaptada a cada situação: compra entre particulares, empresa, herança, leasing, etc.\nNo seu caso, faltam atualmente: [listar os documentos faltantes].\nPosso lhe fornecer modelos simples para a declaração de alojamento ou guiá-lo passo a passo para cada documento.\nEstamos quase lá, eu o ajudo a finalizar tudo isso.\nBien cordialement,\nwww.francecartegrise.net \n\n📑 Phrase : Pourquoi deux CERFA (mandat + demande) ?\nO cliente acha redundante.\n✍️ Réponse GPT attendue :\nExplicar que o mandato autoriza, e a solicitação inicia.\nRassurer sobre a utilidade.\nNão dar a impressão de burocracia inútil.\n🧠 Exemple GPT :\nBonjour,\nDe fato, você deve assinar dois formulários: o mandato (CERFA 13757) e a solicitação de registro (CERFA 13750).\nO primeiro nos dá a autorização para efetuar o processo em seu nome. O segundo, é a solicitação oficial que transmitimos aos serviços do Estado.\nEssas duas etapas são obrigatórias para garantir um tratamento seguro e reconhecido pela administração. Posso, claro, preenchê-los previamente para você para economizar tempo.\nBien à vous,\nwww.francecartegrise.net",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        992
+      ],
+      "id": "1243a92e-5796-406a-a3dd-157a1a1a6890",
+      "name": "11. Preparar Prompt: Démarches / Justificatifs"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "78b40f8a-2114-4630-9b6f-87063d834925",
+              "name": "categoryPrompt",
+              "value": "⚠️ 6. Cas particuliers / Remarques clients\n\n🧑‍⚖️ Phrase : Client diz que é uma fraude / ameaça de denúncia\nCliente com raiva ou desconfiado, pensa ter sido enganado.\n✍️ Resposta GPT esperada :\nNão se justificar muito bruscamente.\nRetomar os fatos com calma e prova de credenciamento.\nPermaneça humano, profissional, sem tom jurídico frio.\n🧠 Exemplo GPT :\nBonjour,\nLamento que tenha essa impressão, e quero lhe tranquilizar: France Carte Grise é de fato um prestador de serviços credenciado e habilitado pelo Ministério do Interior e pelo Tesouro Público.\nNós tratamos cada processo com seriedade, e estou aqui para garantir que tudo ocorra da melhor forma para você.\nSe você encontrou algum problema ou incompreensão, estou inteiramente à sua disposição para esclarecer e encontrar uma solução rápida.\nObrigado pela sua paciência, estou à sua escuta.\nBien cordialement,\nwww.francecartegrise.net \n\n🤯 Phrase : Demasiado complicado, quer parar tudo e ser reembolsado\nO cliente desiste, muitos documentos ou etapas.\n✍️ Resposta GPT esperada :\nEmpatia + proposta de simplificação.\nSe a solicitação for confirmada: explicar as CGVs + direito de retratação.\n🧠 Exemplo GPT :\nBonjour,\nCompreendo a sua frustração. É verdade que os procedimentos de registro podem às vezes parecer pesados, especialmente com os documentos comprovativos solicitados.\nPosso ajudá-lo(a) a simplificar o processo enviando-lhe modelos ou tratando alguns documentos em seu nome.\nSe, apesar de tudo, desejar cancelar, posso guiá-lo(a) no processo de retratação previsto nas nossas CGVs. Saiba apenas que, dependendo do andamento do seu processo, um reembolso parcial pode ser aplicado.\nDe qualquer forma, estou aqui para o(a) acompanhar, no sentido que melhor lhe convier.\nBien à vous,\nwww.francecartegrise.net",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        1152
+      ],
+      "id": "f11dc348-48a3-48dc-96b6-0c2569d63e35",
+      "name": "11. Preparar Prompt: Cas particuliers"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE email_logs SET\n  status = 'Falha',\n  processed_at = NOW(),\n  error_message = '{{ $error.message.replace(/'/g, \"''\") }}'\nWHERE message_id = '{{ $json.messageId }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        992,
+        1808
+      ],
+      "id": "e2606785-8906-459d-9864-96dc5a2b07eb",
+      "name": "Log DB (Status Erro)",
+      "credentials": {
+        "postgres": {
+          "id": "JTkzdndHElb2t54O",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.messageId }}",
+        "labelIds": [
+          "Label_3398104576933704715"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1232,
+        1808
+      ],
+      "id": "113530e2-ff19-4633-be4b-212c91946491",
+      "name": "Add Label: Erro Processamento",
+      "webhookId": "1ff7ef53-8e7c-4248-adf9-f73967435bdd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "gustavilaslife@gmail.com",
+        "subject": "N8N - Erro na Automação de E-mail: {{ $json.subject }}",
+        "message": "Um erro ocorreu no processamento do e-mail:\n\n**Detalhes do E-mail:**\nID: {{ $json.messageId }}\nAssunto: {{ $json.subject }}\nRemetente: {{ $json.fromEmail }}\n\n**Detalhes do Erro:**\nErro: {{ $error.message }}\nStack: {{ $error.stack }}\n\nPor favor, verifique manualmente.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1440,
+        1808
+      ],
+      "id": "e55564de-cda4-407f-8523-abeacad31a9d",
+      "name": "Notificar Admin (E-mail)",
+      "webhookId": "32748866-ce41-442c-96da-75092897dad1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vOQvZHcOdevyPjMY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        752,
+        1808
+      ],
+      "id": "5a186169-6f68-4a66-99ea-13e4e21fa8a2",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4c0cfa48-4697-42ef-bad0-e24a721d6b5f",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -464,
+        704
+      ],
+      "id": "9c58c272-909b-4f6e-93e2-28ac6adaff6d",
+      "name": "2. Se Tem Nome?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a2270563-345b-4889-8059-df0aa58195b6",
+              "name": "introductionPart",
+              "value": "={{ $json.output.senderName }} Merci d'utiliser les services de France Carte Grise",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        608
+      ],
+      "id": "8029fe17-86b3-4f8c-9255-de4b694ee050",
+      "name": "3a. Com Nome"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "897e4f92-8222-4717-bc5b-c3c857ccfe3",
+              "name": "introductionPart",
+              "value": "Salut, merci d'utiliser les services de France Carte Grise.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        800
+      ],
+      "id": "71cccd87-9868-4cef-ae05-3f02a465a2a5",
+      "name": "3b. Sem Nome"
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentHour = new Date().getHours();\nlet greetingTime;\n\n// Lógica para determinar a saudação com base na hora atual\nif (currentHour >= 5 && currentHour < 12) {\n  greetingTime = \"Bonjour\"; // 5 AM to 11:59 AM\n} else if (currentHour >= 12 && currentHour < 18) {\n  greetingTime = \"Bon après-midi\"; // 12 PM to 5:59 PM\n} else {\n  greetingTime = \"Bonsoir\"; // 6 PM to 4:59 AM\n}\n\n// Retorna o novo dado 'greetingTime' junto com todos os dados existentes\n// '$json' contém todos os dados que vieram do nó anterior (Merge Intro)\nreturn [{\n  json: {\n    greetingTime: greetingTime,\n    ...$json\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        0,
+        704
+      ],
+      "id": "6957d94e-a669-4925-a4f0-04cae5cc2cc8",
+      "name": "4. Horário da Saudação",
+      "alwaysOutputData": true,
+      "jsCode": "const currentHour = new Date().getHours();\nlet greetingTime;\n\nif (currentHour >= 5 && currentHour < 12) {\n  greetingTime = \"Bonjour\";\n} else if (currentHour >= 12 && currentHour < 18) {\n  greetingTime = \"Bon après-midi\";\n} else {\n  greetingTime = \"Bonsoir\";\n}\n\nreturn [{\n  json: {\n    greetingTime: greetingTime,\n    ...$json // Passa todos os dados anteriores\n  }\n}];"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3f6239d7-ac0f-4353-ae55-0465dc5be7ff",
+              "name": "greetingTime",
+              "value": "={{ $json.greetingTime }}",
+              "type": "string"
+            },
+            {
+              "id": "ddd940f5-6a00-436c-9f62-f34fc50ba245",
+              "name": "introductionPart",
+              "value": "={{ $json.introductionPart }}",
+              "type": "string"
+            },
+            {
+              "id": "d11ffea9-dd19-4c97-91f8-a6b70204f317",
+              "name": "messageBodyPlain",
+              "value": "={{ $('1. Preparar Dados Iniciais').item.json.messageBodyPlain }}",
+              "type": "string"
+            },
+            {
+              "id": "673e3a50-85bf-47ad-b0d7-9cb06461fb39",
+              "name": "messageId",
+              "value": "={{ $('1. Preparar Dados Iniciais').item.json.messageId }}",
+              "type": "string"
+            },
+            {
+              "id": "f14cb35d-d7f4-4d37-a1b5-1a813c1826d2",
+              "name": "fromEmail",
+              "value": "={{ $('1. Preparar Dados Iniciais').item.json.fromEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "bbe87471-ac77-40fb-a8f8-f543c53d0daa",
+              "name": "subject",
+              "value": "={{ $('1. Preparar Dados Iniciais').item.json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "09b7dbb2-eabb-4ffe-a4bf-b579e9059c93",
+              "name": "threadId",
+              "value": "={{ $('1. Preparar Dados Iniciais').item.json.threadId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        704
+      ],
+      "id": "cce8ebf1-1c6d-4f3f-9387-10072e64d479",
+      "name": "5. Set variaveis para IA"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "28a70b2c-fc78-4069-a345-2c087ebe31e0",
+              "name": "category",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        704
+      ],
+      "id": "dd2614d5-a5ca-440f-a2ac-1c5380e32c4e",
+      "name": "6. Seta Categoria"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bdee35b3-3c24-47f0-92f7-06b2aed826a8",
+              "name": "status",
+              "value": "categorizado",
+              "type": "string"
+            },
+            {
+              "id": "a3ad3c3a-46bd-474e-8f2d-e3ff62c72767",
+              "name": "categoria",
+              "value": "={{ $('Switch').item.json.choices[0].message.content }}",
+              "type": "string"
+            },
+            {
+              "id": "09355fa1-b7ab-4362-9380-d1c97a41cb32",
+              "name": "usage.prompt_tokens",
+              "value": "={{ $('Switch').item.json.usage.prompt_tokens }}",
+              "type": "number"
+            },
+            {
+              "id": "5ff5e8ce-e962-467d-a789-93ffee9fcef8",
+              "name": "usage.completion_tokens",
+              "value": "={{ $('Switch').item.json.usage.completion_tokens }}",
+              "type": "number"
+            },
+            {
+              "id": "f8e71114-4a26-46a7-b5a6-c1145f8a8270",
+              "name": "usage.total_tokens",
+              "value": "={{ $('Switch').item.json.usage.total_tokens }}",
+              "type": "number"
+            },
+            {
+              "id": "852892df-5e2f-479b-a229-a6528473253c",
+              "name": "snippet",
+              "value": "={{ $json.snippet }}",
+              "type": "string"
+            },
+            {
+              "id": "ec837f33-915c-4ac4-b8f7-9489ff3d2841",
+              "name": "from.value[0].address",
+              "value": "={{ $('Gmail Trigger (Novos e-mails)').item.json.from.value[0].address }}",
+              "type": "string"
+            },
+            {
+              "id": "4cb6906c-36a6-44cf-9db1-2c4b44766c7f",
+              "name": "from.value[0].name",
+              "value": "={{ $('Gmail Trigger (Novos e-mails)').item.json.from.value[0].name }}",
+              "type": "string"
+            },
+            {
+              "id": "edf72e88-382b-4265-8c0e-31709bfe19d2",
+              "name": "subject",
+              "value": "={{ $('Gmail Trigger (Novos e-mails)').item.json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "165e269d-802c-4155-a01d-1c457f0bb5d4",
+              "name": "text",
+              "value": "={{ $('Gmail Trigger (Novos e-mails)').item.json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1600,
+        784
+      ],
+      "id": "d550fc37-2270-4a73-87bd-7819402ec6f2",
+      "name": "8. Mapeia Variaveis para IA 2"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=👤 eMAIL ID: {{ $('5. Set variaveis para IA').item.json.messageId }} \nSubject:{{ $('5. Set variaveis para IA').item.json.subject }}\nEmail: {{ $('8. Mapeia Variaveis para IA 2').item.json.text }}\nCategory: {{ $('8. Mapeia Variaveis para IA 2').item.json.categoria }}"
+            },
+            {
+              "content": "=Tu es un assistant virtuel de *France Carte Grise. Ta mission est de rédiger une réponse **courtoise, claire et utile* au message suivant reçu d'un client.\n\n⚠ *IMPORTANT : Tu dois absolument répondre en français. Ne réponds jamais dans une autre langue.*\n\nVoici les informations disponibles :\n\n👤 eMAIL ID \n{{ $('5. Set variaveis para IA').item.json.messageId }}\n\n📬 Contenu du message reçu :  \nSubject:{{ $('5. Set variaveis para IA').item.json.subject }}\nEmail: {{ $('8. Mapeia Variaveis para IA 2').item.json.text }}\n\nCategory:{{ $('8. Mapeia Variaveis para IA 2').item.json.categoria }}\n\n\nSuivez les instructions spécifiques ci-dessous, selon l'étiquette :\n\n🔁 Prompt Général à injecter dans GPT (en tant qu'instruction système ou début de contexte)\nTu es un agent expert du service client France Carte Grise, mandaté officiellement par la société TED, prestataire agréé et habilité par le Ministère de l’Intérieur et le Trésor Public.\nTa mission est de répondre aux questions clients par e-mail, de manière très professionnelle, chaleureuse, naturelle, empathique, tout en reformulant leurs propos pour mieux les comprendre, en évitant toute technicité inutile, et en les rassurant étape par étape.\nTa réponse doit :\nêtre humaine et rassurante, comme si tu répondais en face à face à un client parfois stressé ou perdu,\nrespecter scrupuleusement les informations présentes dans les Conditions Générales de Vente (CGV) de TED (FranceCarteGrise.net),\nexpliquer clairement ce qui se passe, ce qui est attendu, et quelle est la prochaine étape pour le client,\nproposer, si nécessaire, une solution alternative, un geste commercial ou une orientation vers le service client.\n\n{{ $json.categoryPrompt }}",
+              "role": "system"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1952,
+        784
+      ],
+      "id": "7c915665-74f7-4cc9-a72b-76595033fc17",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "TBnjVh1O9sBeVAYt",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3fd944a1-47c2-4a0c-b9ee-5e54f2b480ec",
+              "name": "categoriaurl",
+              "value": "={{ $('8. Mapeia Variaveis para IA 2').item.json.categoria.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\").replaceAll(\" \", \"\").replaceAll(/[^\\w-]/g, \"\")}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2528,
+        784
+      ],
+      "id": "014c6aaa-d076-49c8-a87f-db83830dbd4e",
+      "name": "Seta categoria para url"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "email_logs",
+          "mode": "list",
+          "cachedResultName": "email_logs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Gmail Trigger (Novos e-mails)').item.json.headers[\"message-id\"] }}",
+            "thread_id": "={{ $('Gmail Trigger (Novos e-mails)').item.json.threadId }}",
+            "sender_email": "={{ $('Gmail Trigger (Novos e-mails)').item.json.from.value[0].address }}",
+            "subject": "={{ $('Gmail Trigger (Novos e-mails)').item.json.subject }}",
+            "ai_response": "={{ $('OpenAI1').item.json.choices[0].message.content }}",
+            "category": "={{ $('8. Mapeia Variaveis para IA 2').item.json.categoria }}",
+            "status": "={{ $('8. Mapeia Variaveis para IA 2').item.json.status }}",
+            "processed_at": "={{ $now }}",
+            "total_tokens": 0,
+            "tokens_output": 0,
+            "tokens_input": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "thread_id",
+              "displayName": "thread_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sender_email",
+              "displayName": "sender_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ai_response",
+              "displayName": "ai_response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tokens_input",
+              "displayName": "tokens_input",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tokens_output",
+              "displayName": "tokens_output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total_tokens",
+              "displayName": "total_tokens",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "processed_at",
+              "displayName": "processed_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3488,
+        784
+      ],
+      "id": "1d052863-c033-4298-834f-fd11a21d16bc",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "JTkzdndHElb2t54O",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Subject: {{ $json.subject }}\nMsg: {{ $json.messageBodyPlain }}",
+        "options": {
+          "systemMessage": "You are an expert email classifier for France Carte Grise. Your task is to classify the user's email into one of the following categories and return the result as text. You MUST output ONLY the category and nothing else, ensuring the text is one of the following options\n\nCategories:\n- Paiement / Remboursement / Facturation\n- Dépôt de documents / Accès au portail\n- Suivi de dossier\n- Problèmes techniques\n- Carte grise / Contrôle technique\n- Démarches / Justificatifs\n- Cas particuliers / Remarques clients\n- Autre\n\nI case none of the above set categorie as \n- Error"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        352,
+        992
+      ],
+      "id": "79ff03a5-08c6-4c20-9a34-c0835fe95224",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        272,
+        1184
+      ],
+      "id": "c1bc68ec-4a31-4f42-987d-2be70ba39fad",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "fbgIbploYOtP3mm0",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        480,
+        1232
+      ],
+      "id": "2691be4f-cfca-419f-9491-8152c30debe2",
+      "name": "Calculator"
+    }
+  ],
+  "connections": {
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "🧾 1. Paiement / Remboursement / Facturation1": {
+      "main": [
+        [
+          {
+            "node": "11. Preparar Prompt: Paiement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 2. Dépôt de documents / Accès au portail text": {
+      "main": [
+        [
+          {
+            "node": "11. Preparar Prompt: Documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📦 3. Suivi de dossier": {
+      "main": [
+        [
+          {
+            "node": "11. Preparar Prompt: Suivi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ 4. Problèmes techniques": {
+      "main": [
+        [
+          {
+            "node": "11. Preparar Prompt: Problèmes techniques",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger (Novos e-mails)": {
+      "main": [
+        [
+          {
+            "node": "1. Preparar Dados Iniciais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1. Preparar Dados Iniciais": {
+      "main": [
+        [
+          {
+            "node": "2. Se Tem Nome?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "8. Add Label: Outros (inclassáveis)": {
+      "main": [
+        [
+          {
+            "node": "Notificação de Erro (Admin Email)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Criar Rascunho da Resposta": {
+      "main": [
+        [
+          {
+            "node": "12. Marcar E-mail como Lido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "12. Marcar E-mail como Lido": {
+      "main": [
+        [
+          {
+            "node": "13. Status Enviado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "10b. Capturar Dados da IA e Link Pesquisa": {
+      "main": [
+        [
+          {
+            "node": "11. Criar Rascunho da Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail (Add Label: Processado)1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail (Add Label: Processado pela IA)": {
+      "main": [
+        [
+          {
+            "node": "Seta categoria para url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "6. Seta Categoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "🧾 1. Paiement / Remboursement / Facturation1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "📄 2. Dépôt de documents / Accès au portail text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "📦 3. Suivi de dossier",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "⚙️ 4. Problèmes techniques",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "⚙️ 5. Carte grise / Contrôle technique",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "⚙️ 6. Démarches / Justificatifs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "⚙️ 7. Cas particuliers / Remarques clients",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "8. Add Label: Outros (inclassáveis)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ 5. Carte grise / Contrôle technique": {
+      "main": [
+        [
+          {
+            "node": "11. Preparar Prompt: Carte grise / CT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ 6. Démarches / Justificatifs": {
+      "main": [
+        [
+          {
+            "node": "11. Preparar Prompt: Démarches / Justificatifs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ 7. Cas particuliers / Remarques clients": {
+      "main": [
+        [
+          {
+            "node": "11. Preparar Prompt: Cas particuliers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "13. Status Enviado": {
+      "main": [
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Preparar Prompt: Paiement": {
+      "main": [
+        [
+          {
+            "node": "8. Mapeia Variaveis para IA 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Preparar Prompt: Documents": {
+      "main": [
+        [
+          {
+            "node": "8. Mapeia Variaveis para IA 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Preparar Prompt: Suivi": {
+      "main": [
+        [
+          {
+            "node": "8. Mapeia Variaveis para IA 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Preparar Prompt: Problèmes techniques": {
+      "main": [
+        [
+          {
+            "node": "8. Mapeia Variaveis para IA 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Preparar Prompt: Carte grise / CT": {
+      "main": [
+        [
+          {
+            "node": "8. Mapeia Variaveis para IA 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Preparar Prompt: Démarches / Justificatifs": {
+      "main": [
+        [
+          {
+            "node": "8. Mapeia Variaveis para IA 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Preparar Prompt: Cas particuliers": {
+      "main": [
+        [
+          {
+            "node": "8. Mapeia Variaveis para IA 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log DB (Status Erro)": {
+      "main": [
+        [
+          {
+            "node": "Add Label: Erro Processamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Label: Erro Processamento": {
+      "main": [
+        [
+          {
+            "node": "Notificar Admin (E-mail)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Log DB (Status Erro)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Se Tem Nome?": {
+      "main": [
+        [
+          {
+            "node": "3a. Com Nome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "3b. Sem Nome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3a. Com Nome": {
+      "main": [
+        [
+          {
+            "node": "4. Horário da Saudação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3b. Sem Nome": {
+      "main": [
+        [
+          {
+            "node": "4. Horário da Saudação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. Horário da Saudação": {
+      "main": [
+        [
+          {
+            "node": "5. Set variaveis para IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5. Set variaveis para IA": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6. Seta Categoria": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "8. Mapeia Variaveis para IA 2": {
+      "main": [
+        [
+          {
+            "node": "Gmail (Add Label: Processado)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Gmail (Add Label: Processado pela IA)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seta categoria para url": {
+      "main": [
+        [
+          {
+            "node": "10b. Capturar Dados da IA e Link Pesquisa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        []
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fa44600d1ca54b676b8420c96b17e864f10874d4432d153be100840aa9f3ce49"
+  }
+}
