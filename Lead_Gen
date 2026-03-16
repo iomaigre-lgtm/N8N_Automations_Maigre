@@ -1,0 +1,544 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        544,
+        752
+      ],
+      "id": "85c6b52a-5ef6-4288-9a9f-5e8b50706351",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TBnjVh1O9sBeVAYt",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cafcb751-f3ab-4220-a401-24b32a9dabc5",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        576
+      ],
+      "id": "18e72e2d-456d-448d-9fbf-4a5a77673048",
+      "name": "Webhook",
+      "webhookId": "cafcb751-f3ab-4220-a401-24b32a9dabc5"
+    },
+    {
+      "parameters": {
+        "url": "https://local-business-search.p.rapidapi.com/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $json.negocio }} em {{ $json.local }}"
+            },
+            {
+              "name": "limit",
+              "value": "50"
+            },
+            {
+              "name": "language",
+              "value": "PT"
+            },
+            {
+              "name": "region",
+              "value": "br"
+            },
+            {
+              "name": "extract_emails_and_contacts",
+              "value": "true"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-host",
+              "value": "local-business-search.p.rapidapi.com"
+            },
+            {
+              "name": "x-rapidapi-key",
+              "value": "f0d689d602msh5ea19ee9e893800p1ccb0ejsn20b3ce49ace7"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -160,
+        560
+      ],
+      "id": "f22a09e8-4010-4b85-99e2-e576a4200749",
+      "name": "rapidapi_local-business-search"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Dados Brutos do site:{{ $('scraping_site_scraptio').item.json.data }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=🧠 **Prompt Ultra-Refinado — Agente de Análise de Negócios para Prospecção**\n\n> Você é um analista empresarial voltado a prospecção. Receberá *apenas* o texto cru (via scraping) de um site corporativo.\n> **Sua tarefa:** condensar, em um **único parágrafo** (50 – 120 palavras), as informações mais relevantes que sustentem uma abordagem comercial estratégica.\n>\n> **Diretrizes obrigatórias**\n>\n> 1. **Conteúdo** – Reúna tudo que o texto revelar ou sugerir sobre: proposta de valor, produtos/serviços, segmentos atendidos, diferenciais competitivos, porte/maturidade, presença geográfica, sinais de crescimento ou inovação, e qualquer pista útil para oportunidades de negócio. Use bom senso para inferir dados implícitos; omita o que não existir.\n> 2. **Forma** – Escreva em português claro, profissional e objetivo, evitando jargões excessivos. Estruture frases fluídas, conectadas, sem marcadores, títulos, quebras de linha extras ou comentários meta-textuais. Não coloque “Resumo:” nem conteúdo antes/depois do parágrafo.\n> 3. **Precisão** – Preserve fatos, nomes próprios e números relevantes; elimine slogans vazios, repetições e detalhes legais irrelevantes.\n> 4. **Utilidade Comercial** – Destaque o que possa servir de gancho para conversas de vendas (ex.: expansão internacional, parcerias estratégicas, foco ESG, adoção de tecnologias emergentes).\n> 5. **Tom** – Neutro-analítico, levemente persuasivo: evidencie valor sem soar promocional.\n>\n> **Saída final** – entregue exclusivamente o parágrafo resumido, sem quaisquer palavras ou caracteres adicionais.\n\nAtenão, quanto você não receber os dados brutos do site deve retornar: \"-\"\n\nSomente isso, sem falar nada antes nem depois."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        528,
+        560
+      ],
+      "id": "71ac8c1a-3ae4-4bf9-b45f-bd6b7efe8dcb",
+      "name": "resumo_dados_site"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "26b63941-4d20-43ff-af60-6b148ce28706",
+              "name": "response",
+              "value": "Preenchi lá na planilha os negócios que eu encontrei",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1152,
+        560
+      ],
+      "id": "0e4b1739-f2b7-4ada-bb64-8a0870475f98",
+      "name": "responde_ia"
+    },
+    {
+      "parameters": {
+        "content": "### API SCRAPING GOOGLE MAPS\n\nLink: https://rapidapi.com/letscrape-6bRBa3QguO5/api/local-business-search",
+        "height": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -224,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "0d01e8ec-f4d3-4066-aa4f-3562ae56d771",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        64,
+        560
+      ],
+      "id": "8a155314-f4cb-4c19-9b10-12509584eaab",
+      "name": "separa_itens"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.scraptio.com/scrape",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $('separa_itens').item.json.website }}"
+            },
+            {
+              "name": "api_key",
+              "value": "c46piSFzHIyK7SND6XBoUmNAo7yKOagUfFNMX9KZfLMTR6oyXovaEclkJY5V9yjC"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        560
+      ],
+      "id": "ae264d51-f736-4f9f-aca2-60b0756cd8d4",
+      "name": "scraping_site_scraptio",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "### API SCRAPING SITE\n\nLink: https://scraptio.com/",
+        "height": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        448
+      ],
+      "typeVersion": 1,
+      "id": "ca74e473-7dfe-43b3-ad29-f32b04c4e305",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "19lCJOOsvOsdPBshPos4bVFFkoaAHTRcwirEDh_ysKSE",
+          "mode": "list",
+          "cachedResultName": "Leads LFTN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19lCJOOsvOsdPBshPos4bVFFkoaAHTRcwirEDh_ysKSE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19lCJOOsvOsdPBshPos4bVFFkoaAHTRcwirEDh_ysKSE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $('separa_itens').item.json.name }}",
+            "Endereço": "={{ $('separa_itens').item.json.full_address }}",
+            "Cidade": "={{ $('separa_itens').item.json.city }}",
+            "CEP": "={{ $('separa_itens').item.json.zipcode }}",
+            "Rating": "={{ $('separa_itens').item.json.rating }}",
+            "Quantidade de Avaliações": "={{ $('separa_itens').item.json.review_count }}",
+            "Site": "={{ $('separa_itens').item.json.website }}",
+            "Telefone": "={{ $('separa_itens').item.json.phone_number }}",
+            "Resumo": "={{ $('resumo_dados_site').item.json.text }}",
+            "Business_id": "={{ $('separa_itens').item.json.business_id }}",
+            "email": "={{ $('Edit Fields').item.json.email }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Business_id",
+              "displayName": "Business_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Endereço",
+              "displayName": "Endereço",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cidade",
+              "displayName": "Cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CEP",
+              "displayName": "CEP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Quantidade de Avaliações",
+              "displayName": "Quantidade de Avaliações",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Site",
+              "displayName": "Site",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resumo",
+              "displayName": "Resumo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Feedback",
+              "displayName": "Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        880,
+        560
+      ],
+      "id": "031fd7b7-bd33-43fd-85bd-d55649d27fa0",
+      "name": "inclui_dados_planilha1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "NkQBXb7XiiJLGm0e",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "90f900e6-7886-4a6a-98a1-1b9123ceb317",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "19b14793-06a2-4fe0-ae81-893ed4fbc2e2",
+              "name": "negocio",
+              "value": "={{ $json.body.businessType }}",
+              "type": "string"
+            },
+            {
+              "id": "8a303106-2df0-439c-9c2f-14a0fa287f04",
+              "name": "local",
+              "value": "={{ $json.body.location }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": "={{ false }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -448,
+        576
+      ],
+      "id": "4d4e35e0-10af-43de-8002-e6d4265417af",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"accepted\",\n  \"message\": \"Processando sua solicitação. Você receberá um email em até 10 minutos.\"\n}\n",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -672,
+        576
+      ],
+      "id": "3c6b8f77-e34c-432d-a7db-f325bd700ec3",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "resumo_dados_site",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rapidapi_local-business-search": {
+      "main": [
+        [
+          {
+            "node": "separa_itens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "resumo_dados_site": {
+      "main": [
+        [
+          {
+            "node": "inclui_dados_planilha1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "separa_itens": {
+      "main": [
+        [
+          {
+            "node": "scraping_site_scraptio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "scraping_site_scraptio": {
+      "main": [
+        [
+          {
+            "node": "resumo_dados_site",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "inclui_dados_planilha1": {
+      "main": [
+        [
+          {
+            "node": "responde_ia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "rapidapi_local-business-search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fa44600d1ca54b676b8420c96b17e864f10874d4432d153be100840aa9f3ce49"
+  }
+}
