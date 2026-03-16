@@ -1,0 +1,1741 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2512,
+        2608
+      ],
+      "id": "a87043d5-ca8b-4d1c-a6d8-947c67eae72c",
+      "name": "Ignorar"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "cg",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.text.body }}",
+              "rightValue": "ola|olá|oi|hello|hi|hey|start|bom dia|boa tarde|boa noite|good morning|good afternoon|good evening",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2240,
+        3072
+      ],
+      "id": "5560dd67-4f7a-452f-b467-61c834c70acc",
+      "name": "E saudacao?"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2240,
+        3264
+      ],
+      "id": "46ed5018-ce33-4563-8da2-a6f1ded3a973",
+      "name": "Aguardar Humano"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ycloud",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2864,
+        2832
+      ],
+      "id": "02bb7da5-ebcf-4db7-a25c-bc7029dfa7e0",
+      "name": "Webhook3",
+      "webhookId": "5e5dbf46-6c0d-49a0-b78c-684aadfb4ded"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.from }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2512,
+        2832
+      ],
+      "id": "2e5ac4ef-c245-4ffc-8307-b4f1d9129868",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.type }}",
+              "rightValue": "interactive",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2240,
+        2832
+      ],
+      "id": "66be31fe-71ec-4f1b-bfd6-6c04a1e4f58a",
+      "name": "E botao clicado?2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"Studio Garage🏍️\"\n    },\n    \"body\": {\n      \"text\": \"Bem-vindo! Selecione o idioma👇\\n\\nWelcome! Select your language\"\n    },\n    \"footer\": {\n      \"text\": \"Studio Garage\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"lang-en\",\n            \"title\": \"English\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"lang-pt\",\n            \"title\": \"Português\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1968,
+        3072
+      ],
+      "id": "88a74c1d-9b29-4ebf-b990-6cb9d2177e9c",
+      "name": "Enviar Boas-vindas2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c3",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "lang-en",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1968,
+        2704
+      ],
+      "id": "8d3faffe-37ed-4595-bea0-cc87bfa1683c",
+      "name": "Ingles?2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c4",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "lang-pt",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1968,
+        2896
+      ],
+      "id": "a8093879-8c25-4995-9cdb-df6e5110c52d",
+      "name": "Portugues?2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"Studio Garage 🏍️\"\n    },\n    \"body\": {\n      \"text\": \"Our services👇:\\n1️⃣. Moto Detailing  \\n2️⃣. Ceramic Coating \\n3️⃣. PPF  \\n\\nWhich service do you need?\"\n    },\n    \"footer\": {\n      \"text\": \"Studio Garage\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"service-protection-en\",\n            \"title\": \"Detailing 🧼\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"service-care-en\",\n            \"title\": \"Ceramic 🫙\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"service-consult-en\",\n            \"title\": \"PPF 🛡️\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1664,
+        2592
+      ],
+      "id": "a66dc3e7-4359-4fba-9201-7ee5c6301527",
+      "name": "Menu Servicos EN2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"Studio Garage🏍️\"\n    },\n    \"body\": {\n      \"text\": \"Nossos serviços👇:\\n1️⃣. Moto Detailing  \\n2️⃣. Coaching Cerâmico \\n3️⃣. PPF  \\n\\nDe qual serviço você precisa?\"\n    },\n    \"footer\": {\n      \"text\": \"Studio Garage\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"service-protection-pt\",\n            \"title\": \"Detailing 🧼\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"service-care-pt\",\n            \"title\": \"Cerâmica 🫙\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"service-consult-pt\",\n            \"title\": \"PPF 🛡️\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1664,
+        2768
+      ],
+      "id": "09e3f154-7d1b-4d21-9a17-c7d539d86ee4",
+      "name": "Menu Servicos PT3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c5",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "service-protection-en",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1648,
+        2992
+      ],
+      "id": "3367d71a-2d2e-4a2d-8bd9-c2886931dea9",
+      "name": "Protecao EN?2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c7",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "service-care-en",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1648,
+        3152
+      ],
+      "id": "7a29960b-c08a-481d-a948-36fb833c3e59",
+      "name": "Cuidados EN?2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c9a",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "service-consult-en",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1648,
+        3312
+      ],
+      "id": "ffa882bb-a087-42c0-8c04-2bba30e1b890",
+      "name": "Consulta EN?2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Please provide your request along with the make and model of your motorcycle to receive a price estimate.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -160,
+        2768
+      ],
+      "id": "d3a60606-0eee-462c-b956-53acde2351ac",
+      "name": "Pedir Orcamento EN2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"from\":\"+351914111130\",\"to\":\"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\"type\":\"text\",\"text\":{\"body\":\"Por favor, informe sua solicitação junto com a marca e o modelo da tua Mota para receber uma estimativa de preço.\"}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        384,
+        3248
+      ],
+      "id": "0e0347b3-3934-404e-82a4-db062aa9222e",
+      "name": "Pedir Orcamento PT2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"cta_url\",\n    \"body\": {\n      \"text\": \"We will get back to you in this chat!! Follow us on Instagram to be the first to see our latest updates and special offers!\"\n    },\n    \"action\": {\n      \"name\": \"cta_url\",\n      \"parameters\": {\n        \"display_text\": \"Our Instagram\",\n        \"url\": \"https://www.instagram.com/studiogaragecascais\"\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        160,
+        2768
+      ],
+      "id": "f21289c2-895f-4a36-a069-3d5415ad61e2",
+      "name": "Instagram CTA EN1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"from\":\"+351914111130\",\"to\":\"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\"type\":\"interactive\",\"interactive\":{\"type\":\"cta_url\",\"body\":{\"text\":\"Entraremos em contacto com você neste chat!! Siga-nos no Instagram para ser o primeiro a ver novidades e ofertas especiais!\"},\"action\":{\"name\":\"cta_url\",\"parameters\":{\"display_text\":\"Nosso Instagram\",\"url\":\"https://www.instagram.com/studiogaragecascais\"}}}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        608,
+        3248
+      ],
+      "id": "9ab3dd22-715e-4716-a778-de1a90f0ba71",
+      "name": "Instagram CTA PT2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c6",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "service-protection-pt",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1648,
+        3552
+      ],
+      "id": "6c1dc09c-508c-4b72-bfc1-29106030035e",
+      "name": "Detailing PT"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"Moto Detailing\"\n    },\n    \"body\": {\n      \"text\": \"Selecione um serviço de detail:\"\n    },\n    \"footer\": {\n      \"text\": \"Studio Garage\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"prot-ppf-pt\",\n            \"title\": \"Detail Cascais 🏍️\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"prot-ceramic-pt\",\n            \"title\": \"Detail Verão ☀️\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"prot-verao-pt\",\n            \"title\": \"Detail Inverno ❄️\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1248,
+        3536
+      ],
+      "id": "d12aa9d1-cedc-4f7e-b70b-501440df5ac4",
+      "name": "Submenu Detailing PT2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c13",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "prot-ppf-pt",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -864,
+        3520
+      ],
+      "id": "39070b7c-a73f-4486-a3d3-87fab0d4b3b7",
+      "name": "Cascais PT ?1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Detail Cascais 🏍️ \\n\\n O detail Cascais é a preparação técnica ideal para quem deseja manter a moto protegida com acabamento profissional. É a base recomendada antes da aplicação de PPF ou Cerâmica, garantindo melhor aderência e durabilidade.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -528,
+        3456
+      ],
+      "id": "b5344598-07de-46d9-bc2f-361d9f215280",
+      "name": "Desc Cascais PT1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Detail Verão ☀️\\n\\n Desenvolvida para motos expostas ao sol, altas temperaturas. Reduz ressecamento, desbotamento e desgaste causado pelo calor. Ideal para primavera e verão. Maior resistência ao sol, brilho prolongado e proteção reforçada.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -528,
+        3600
+      ],
+      "id": "b2d8d426-2f2a-46b2-9b02-a8b545cd2073",
+      "name": "Desc Verão PT1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c14",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "prot-ceramic-pt",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -864,
+        3680
+      ],
+      "id": "28f4afc0-d9ef-499a-a700-f85b9c8f2c87",
+      "name": "Verão PT?1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "85867aca-8b00-428f-8c33-687c89530285",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "prot-verao-pt",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -864,
+        3824
+      ],
+      "id": "7f84254c-80a1-4ba7-a6fd-900f9259ba60",
+      "name": "Inverno PT1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Detail Inverno ❄️\\n\\n Focada na proteção contra chuva, umidade e ambientes salinos. Ajuda a evitar ferrugem, oxidação e desgaste prematuro de peças metálicas. Ideal para uso frequente em clima úmido ou litoral.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -528,
+        3744
+      ],
+      "id": "c8adf326-1c83-4c51-9a15-e5d5fadf2355",
+      "name": "Inverno PT"
+    },
+    {
+      "parameters": {
+        "content": "## Menu EN\n",
+        "height": 512,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1728,
+        2944
+      ],
+      "typeVersion": 1,
+      "id": "2651adb0-734d-4c56-968c-83063e9047ba",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c8",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "service-care-pt",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1664,
+        3680
+      ],
+      "id": "e9a70b8d-da11-44c1-a957-c36b2079a4e5",
+      "name": "Ceramica PT?2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"🫙 Coating Cerâmico – Proteção Avançada\\nO Coating Cerâmico é a solução para quem busca máxima durabilidade, resistência e acabamento premium. Após uma preparação técnica detalhada da superfície, aplicamos um revestimento cerâmico de alta performance que cria uma camada protetora contra agentes químicos, raios UV, calor e contaminações externas.\\n✔️ Brilho profundo e acabamento superior\\n\\n✔️ Reduz aderência de sujeira e facilita a limpeza\\n\\n✔️ Proteção estrutural de longo prazo\\nAplicação técnica com acabamento premium no Studio Garage. 🏍️\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1248,
+        3680
+      ],
+      "id": "7fe4929f-8cb3-41a3-ac7d-9a9f60965e3f",
+      "name": "Expl. Ceramica PT3"
+    },
+    {
+      "parameters": {
+        "content": "## MENU PT\n",
+        "height": 512
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1728,
+        3472
+      ],
+      "typeVersion": 1,
+      "id": "8e8e1874-2f4d-49a0-936e-9c14add601e8",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c9b",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "service-consult-pt",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1664,
+        3856
+      ],
+      "id": "cf8642a9-d815-495c-8259-8e76976a5fa0",
+      "name": "PPF PT?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"🛡️ PPF – Paint Protection Film\\n\\n\\n\\nO PPF é um filme transparente de alta resistência, aplicado diretamente sobre a pintura da moto para criar uma barreira invisível de proteção.\\n\\nProtege contra riscos, pedras da estrada, raios UV, sal e desgaste do uso, ajudando a preservar a pintura original e o valor da moto ao longo do tempo.\\n\\n✔️ Filme praticamente invisível\\n✔️ Tecnologia auto-regenerativa (micro riscos desaparecem com o calor)\\n✔️ Até 8 anos de garantia contra amarelecimento\\n\\nAplicação técnica com acabamento premium no Studio Garage.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1248,
+        3840
+      ],
+      "id": "72748779-efce-4aaa-8c01-a77eefd1cc1c",
+      "name": "PPF PT2"
+    },
+    {
+      "parameters": {
+        "content": "## DETAILING PT\n",
+        "height": 512,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -928,
+        3440
+      ],
+      "typeVersion": 1,
+      "id": "2e2a95ef-fd33-483e-858d-f79f96d96121",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Submenu EN\n",
+        "height": 512,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1312,
+        2944
+      ],
+      "typeVersion": 1,
+      "id": "c0634954-0598-4a14-b386-e9639d85d0cb",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Submenu PT\n",
+        "height": 512
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1312,
+        3472
+      ],
+      "typeVersion": 1,
+      "id": "16cf1396-4652-4827-af1e-23aaf4f81ad4",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"Moto Detailing\"\n    },\n    \"body\": {\n      \"text\": \"Select a detailing service:\"\n    },\n    \"footer\": {\n      \"text\": \"Studio Garage\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"prot-ppf-en\",\n            \"title\": \"Cascais Detail 🏍️\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"prot-ceramic-en\",\n            \"title\": \"Summer Detail ☀️\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"prot-verao-en\",\n            \"title\": \"Winter Detail ❄️\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1248,
+        3008
+      ],
+      "id": "26a6e7b0-730e-4685-837d-8094d4cf4115",
+      "name": "Submenu Detailing EN2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c10",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "prot-ppf-en",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -880,
+        2784
+      ],
+      "id": "219900cb-83a5-498f-9463-6764d944aafe",
+      "name": "Cascais EN?1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c11",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "prot-ceramic-en",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -880,
+        2928
+      ],
+      "id": "7bbb34ef-4a0d-4209-9226-596473ca99f5",
+      "name": "Verão EN?1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "85867aca-8b00-428f-8c33-687c89530285",
+              "leftValue": "={{ $json.body.whatsappInboundMessage.interactive.button_reply.id }}",
+              "rightValue": "prot-verao-en",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -880,
+        3072
+      ],
+      "id": "9e12fefd-f84f-4f2c-b54f-fa18088e9819",
+      "name": "Inverno PT2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Cascais Detail 🏍️ \\n\\n The Cascais Detail is the ideal technical preparation for those who want to keep their motorcycle protected with a professional finish. It is the recommended base before applying PPF or Ceramic Coating, ensuring better adhesion and durability.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -512,
+        2752
+      ],
+      "id": "a4a43c54-a8c9-4041-90b1-ff8a1e1fabb4",
+      "name": "Desc Cascais EN1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Summer Detail ☀️\\n\\n Developed for motorcycles exposed to the sun and high temperatures. Reduces drying out, fading, and wear caused by heat. Ideal for spring and summer. Greater sun resistance, prolonged shine, and reinforced protection.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -512,
+        2896
+      ],
+      "id": "e1dd1677-a259-42c8-8705-4b2130461988",
+      "name": "Desc Verão EN1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Winter Detail ❄️\\n\\n Focused on protection against rain, humidity, and salty environments. Helps prevent rust, oxidation, and premature wear of metal parts. Ideal for frequent use in humid climates or coastal areas.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -512,
+        3040
+      ],
+      "id": "ec671c61-1351-4aca-9813-1df8b1122c45",
+      "name": "Desc Inverno EN1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"🫙 Ceramic Coating – Advanced Protection\\nCeramic Coating is the solution for those seeking maximum durability, resistance, and a premium finish. After detailed technical surface preparation, we apply a high-performance ceramic coating that creates a protective layer against chemical agents, UV rays, heat, and external contamination.\\n✔️ Deep gloss and superior finish\\n\\n✔️ Reduces dirt adhesion and makes cleaning easier\\n\\n✔️ Long-term structural protection\\nTechnical application with a premium finish at Studio Garage. 🏍️\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1248,
+        3152
+      ],
+      "id": "d0e91fa1-ebb9-4775-8b2b-caffe2538bd1",
+      "name": "Expli. Ceramica EN2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "03bed375203e4b72dc9b331dcdf03751"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"+351914111130\",\n  \"to\": \"{{ $('Webhook3').first().json.body.whatsappInboundMessage.from }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"🛡️ PPF – Paint Protection Film\\n\\n\\n\\nPPF is a high-resistance transparent film applied directly to the motorcycle's paint to create an invisible protective barrier.\\n\\nIt protects against scratches, road debris, UV rays, salt, and everyday wear, helping to preserve the original paint and the value of the motorcycle over time.\\n\\n✔️ Practically invisible film\\n✔️ Self-healing technology (micro-scratches disappear with heat)\\n✔️ Up to an 8-year warranty against yellowing\\n\\nTechnical application with a premium finish at Studio Garage.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1248,
+        3296
+      ],
+      "id": "0724c75c-9a2b-4854-bca5-67d4f16eba32",
+      "name": "PPF EN2"
+    },
+    {
+      "parameters": {
+        "content": "## DETAILING EN\n",
+        "height": 512,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -944,
+        2704
+      ],
+      "typeVersion": 1,
+      "id": "75cd73a7-895c-4aba-b1a6-7929a6490b31",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## DETAIL PACOTES PT\n",
+        "height": 512,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -592,
+        3392
+      ],
+      "typeVersion": 1,
+      "id": "f8070493-090e-4647-b862-c3e63b1e0eea",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## DETAIL PACOTES EN\n",
+        "height": 512,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -576,
+        2672
+      ],
+      "typeVersion": 1,
+      "id": "68600715-e795-4d7b-9914-5e28fb089b7b",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## ORÇAMENTO  +  CTA EN\n",
+        "height": 256,
+        "width": 592,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -224,
+        2688
+      ],
+      "typeVersion": 1,
+      "id": "22ad4ff9-c869-4770-bd76-ece987441b20",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## ORÇAMENTO  +  CTA PT\n",
+        "height": 256,
+        "width": 592,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        288,
+        3168
+      ],
+      "typeVersion": 1,
+      "id": "cce10429-68ac-4f22-9a90-1fb086f10155",
+      "name": "Sticky Note9"
+    }
+  ],
+  "connections": {
+    "E saudacao?": {
+      "main": [
+        [
+          {
+            "node": "Enviar Boas-vindas2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Aguardar Humano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook3": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "E botao clicado?2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ignorar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "E botao clicado?2": {
+      "main": [
+        [
+          {
+            "node": "Ingles?2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "E saudacao?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingles?2": {
+      "main": [
+        [
+          {
+            "node": "Menu Servicos EN2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Portugues?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Portugues?2": {
+      "main": [
+        [
+          {
+            "node": "Menu Servicos PT3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Protecao EN?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Protecao EN?2": {
+      "main": [
+        [
+          {
+            "node": "Submenu Detailing EN2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Detailing PT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cuidados EN?2": {
+      "main": [
+        [
+          {
+            "node": "Expli. Ceramica EN2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ceramica PT?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta EN?2": {
+      "main": [
+        [
+          {
+            "node": "PPF EN2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PPF PT?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedir Orcamento EN2": {
+      "main": [
+        [
+          {
+            "node": "Instagram CTA EN1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedir Orcamento PT2": {
+      "main": [
+        [
+          {
+            "node": "Instagram CTA PT2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detailing PT": {
+      "main": [
+        [
+          {
+            "node": "Submenu Detailing PT2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cuidados EN?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submenu Detailing PT2": {
+      "main": [
+        [
+          {
+            "node": "Cascais PT ?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cascais PT ?1": {
+      "main": [
+        [
+          {
+            "node": "Desc Cascais PT1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verão PT?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Desc Cascais PT1": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento PT2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Desc Verão PT1": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento PT2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verão PT?1": {
+      "main": [
+        [
+          {
+            "node": "Desc Verão PT1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Inverno PT1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inverno PT1": {
+      "main": [
+        [
+          {
+            "node": "Inverno PT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Inverno PT": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento PT2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ceramica PT?2": {
+      "main": [
+        [
+          {
+            "node": "Expl. Ceramica PT3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Consulta EN?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expl. Ceramica PT3": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento PT2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PPF PT?": {
+      "main": [
+        [
+          {
+            "node": "PPF PT2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cascais EN?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PPF PT2": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento PT2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submenu Detailing EN2": {
+      "main": [
+        [
+          {
+            "node": "Cascais EN?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cascais EN?1": {
+      "main": [
+        [
+          {
+            "node": "Desc Cascais EN1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verão EN?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verão EN?1": {
+      "main": [
+        [
+          {
+            "node": "Desc Verão EN1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Inverno PT2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inverno PT2": {
+      "main": [
+        [
+          {
+            "node": "Desc Inverno EN1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cascais PT ?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Desc Cascais EN1": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento EN2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Desc Verão EN1": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento EN2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Desc Inverno EN1": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento EN2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expli. Ceramica EN2": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento EN2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PPF EN2": {
+      "main": [
+        [
+          {
+            "node": "Pedir Orcamento EN2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fa44600d1ca54b676b8420c96b17e864f10874d4432d153be100840aa9f3ce49"
+  }
+}
